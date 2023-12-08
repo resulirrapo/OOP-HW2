@@ -4,16 +4,21 @@ import app.audio.Collections.Playlist;
 import app.audio.Collections.Podcast;
 import app.audio.Files.Episode;
 import app.audio.Files.Song;
+import app.user.Artist;
+import app.user.Host;
+import app.user.NormalUser;
 import app.user.User;
 import fileio.input.EpisodeInput;
 import fileio.input.PodcastInput;
 import fileio.input.SongInput;
 import fileio.input.UserInput;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+@Data
 /**
  * The type Admin.
  */
@@ -27,6 +32,35 @@ public final class Admin {
     private Admin() {
     }
 
+    public static List<User> getOnlineUsers() {
+        List<User> onlineUsers = new ArrayList<>();
+        onlineUsers = users.stream().filter(User::isOnline).toList();
+        return onlineUsers;
+    }
+//    public static String addUser(String username, String type, int age, String city) {
+//        if (users.contains(username)) {
+//            return "The username " + username + " is already taken.";
+//        }
+//
+//        User newUser;
+//        switch (type) {
+//            case "user":
+//                newUser = new NormalUser(username, age, city);
+//                break;
+//            case "artist":
+//                newUser = new Artist(username, age, city);
+//                break;
+//            case "host":
+//                newUser = new Host(username, age, city);
+//                break;
+//            default:
+//                return "Invalid user type.";
+//        }
+//
+//        users.add(newUser);
+//        return "The username " + username + " has been added successfully.";
+//    }
+
     /**
      * Sets users.
      *
@@ -35,7 +69,7 @@ public final class Admin {
     public static void setUsers(final List<UserInput> userInputList) {
         users = new ArrayList<>();
         for (UserInput userInput : userInputList) {
-            users.add(new User(userInput.getUsername(), userInput.getAge(), userInput.getCity()));
+            users.add(new NormalUser(userInput.getUsername(), userInput.getAge(), userInput.getCity()));
         }
     }
 
@@ -65,8 +99,8 @@ public final class Admin {
             List<Episode> episodes = new ArrayList<>();
             for (EpisodeInput episodeInput : podcastInput.getEpisodes()) {
                 episodes.add(new Episode(episodeInput.getName(),
-                                         episodeInput.getDuration(),
-                                         episodeInput.getDescription()));
+                        episodeInput.getDuration(),
+                        episodeInput.getDescription()));
             }
             podcasts.add(new Podcast(podcastInput.getName(), podcastInput.getOwner(), episodes));
         }

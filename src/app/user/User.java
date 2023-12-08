@@ -11,6 +11,7 @@ import app.player.PlayerStats;
 import app.searchBar.Filters;
 import app.searchBar.SearchBar;
 import app.utils.Enums;
+import fileio.input.CommandInput;
 import lombok.Data;
 import lombok.Getter;
 
@@ -20,7 +21,7 @@ import java.util.List;
 /**
  * The type User.
  */
-public class User {
+public abstract class User {
     @Getter
     private String username;
     @Getter
@@ -36,8 +37,7 @@ public class User {
     private final Player player = new Player();
     private SearchBar searchBar;
     private boolean lastSearched;
-    private boolean isOnline = true; // Field to track if the user is online or offline
-    private boolean isAdmin = false; // Field to track if the user is a normal user or admin
+    private boolean isOnline = false;
 
     /**
      * Instantiates a new User.
@@ -57,70 +57,7 @@ public class User {
         lastSearched = false;
     }
 
-    public User() {}
-
-    public final String getUsername() {
-        return username;
-    }
-
-    public final void setUsername(String username) {
-        this.username = username;
-    }
-
-    public final int getAge() {
-        return age;
-    }
-
-    public final void setAge(int age) {
-        this.age = age;
-    }
-
-    public final String getCity() {
-        return city;
-    }
-
-    public final void setCity(String city) {
-        this.city = city;
-    }
-
-    public final ArrayList<Playlist> getPlaylists() {
-        return playlists;
-    }
-
-    public final void setPlaylists(ArrayList<Playlist> playlists) {
-        this.playlists = playlists;
-    }
-
-    public final ArrayList<Song> getLikedSongs() {
-        return likedSongs;
-    }
-
-    public final void setLikedSongs(ArrayList<Song> likedSongs) {
-        this.likedSongs = likedSongs;
-    }
-
-    public final ArrayList<Playlist> getFollowedPlaylists() {
-        return followedPlaylists;
-    }
-
-    public final void setFollowedPlaylists(ArrayList<Playlist> followedPlaylists) {
-        this.followedPlaylists = followedPlaylists;
-    }
-
-    public final Player getPlayer() {
-        return player;
-    }
-
-    public final SearchBar getSearchBar() {
-        return searchBar;
-    }
-
-    public final boolean isLastSearched() {
-        return lastSearched;
-    }
-
-    public final void setLastSearched(boolean lastSearched) {
-        this.lastSearched = lastSearched;
+    public User() {
     }
 
     /**
@@ -148,21 +85,8 @@ public class User {
          * Toggles the connection status of the user.
          * @return A message indicating the result of the operation.
          */
-        public String switchConnectionStatus() {
-//            // Toggle the online status
-//            isOnline = !isOnline;
-//
-//            // If the user is now offline, stop the music player
-//            if (!isOnline) {
-//                player.pause();
-//                return this.getUsername() + " is offline.";
-//            } else {
-//                // If the user is now online, resume the music player
-//                return this.getUsername() + " is online.";
-//            }
+        public abstract String switchConnectionStatus();
 
-            return "This is unreachable code. User Class";
-        }
 
     /**
      * Select string.
@@ -566,6 +490,8 @@ public class User {
      * @param time the time
      */
     public void simulateTime(final int time) {
-        player.simulatePlayer(time);
+        if (isOnline) {
+            player.simulatePlayer(time);
+        }
     }
 }

@@ -132,6 +132,16 @@ public final class CommandInput {
                 + ", playlistId=" + playlistId
                 + ", playlistName='" + playlistName + '\''
                 + ", seed=" + seed
+                + ", age=" + age
+                + ", city='" + city + '\''
+                + ", name='" + name + '\''
+                + ", releaseYear=" + releaseYear
+                + ", description='" + description + '\''
+                + ", songs=" + songs
+                + ", date='" + date + '\''
+                + ", price=" + price
+                + ", episodes=" + episodes
+                + ", nextPage='" + nextPage + '\''
                 + '}';
     }
 }
