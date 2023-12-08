@@ -1,0 +1,15 @@
+Starting audit...
+[ERROR] C:\Users\rrapo\Desktop\etapa2\.\src\app\CommandRunner.java:486:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] C:\Users\rrapo\Desktop\etapa2\.\src\app\CommandRunner.java:489: Line is longer than 100 characters (found 104). [LineLength]
+[ERROR] C:\Users\rrapo\Desktop\etapa2\.\src\app\CommandRunner.java:508:50: Parameter message should be final. [FinalParameters]
+[ERROR] C:\Users\rrapo\Desktop\etapa2\.\src\app\user\User.java:63:35: Parameter username should be final. [FinalParameters]
+[ERROR] C:\Users\rrapo\Desktop\etapa2\.\src\app\user\User.java:71:30: Parameter age should be final. [FinalParameters]
+[ERROR] C:\Users\rrapo\Desktop\etapa2\.\src\app\user\User.java:79:31: Parameter city should be final. [FinalParameters]
+[ERROR] C:\Users\rrapo\Desktop\etapa2\.\src\app\user\User.java:87:36: Parameter playlists should be final. [FinalParameters]
+[ERROR] C:\Users\rrapo\Desktop\etapa2\.\src\app\user\User.java:95:37: Parameter likedSongs should be final. [FinalParameters]
+[ERROR] C:\Users\rrapo\Desktop\etapa2\.\src\app\user\User.java:103:44: Parameter followedPlaylists should be final. [FinalParameters]
+[ERROR] C:\Users\rrapo\Desktop\etapa2\.\src\app\user\User.java:119:39: Parameter lastSearched should be final. [FinalParameters]
+[ERROR] C:\Users\rrapo\Desktop\etapa2\.\src\fileio\input\CommandInput.java:5:8: Unused import - java.lang.reflect.AnnotatedArrayType. [UnusedImports]
+[ERROR] C:\Users\rrapo\Desktop\etapa2\.\src\fileio\input\CommandInput.java:38:24: Parameter age should be final. [FinalParameters]
+Audit done.
+Checkstyle ends with 12 errors.
