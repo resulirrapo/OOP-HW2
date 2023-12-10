@@ -4,19 +4,14 @@ import app.audio.Collections.Playlist;
 import app.audio.Collections.Podcast;
 import app.audio.Files.Episode;
 import app.audio.Files.Song;
-import app.user.Artist;
-import app.user.Host;
-import app.user.NormalUser;
-import app.user.User;
+import app.user.*;
 import fileio.input.EpisodeInput;
 import fileio.input.PodcastInput;
 import fileio.input.SongInput;
 import fileio.input.UserInput;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @Data
 /**
@@ -31,35 +26,101 @@ public final class Admin {
 
     private Admin() {
     }
-
+/**
+ * Gets online users.
+ */
     public static List<User> getOnlineUsers() {
-        List<User> onlineUsers = new ArrayList<>();
+        List<User> onlineUsers;
         onlineUsers = users.stream().filter(User::isOnline).toList();
         return onlineUsers;
     }
-//    public static String addUser(String username, String type, int age, String city) {
-//        if (users.contains(username)) {
-//            return "The username " + username + " is already taken.";
-//        }
-//
-//        User newUser;
-//        switch (type) {
-//            case "user":
-//                newUser = new NormalUser(username, age, city);
-//                break;
-//            case "artist":
-//                newUser = new Artist(username, age, city);
-//                break;
-//            case "host":
-//                newUser = new Host(username, age, city);
-//                break;
-//            default:
-//                return "Invalid user type.";
-//        }
-//
-//        users.add(newUser);
-//        return "The username " + username + " has been added successfully.";
-//    }
+
+    /**
+     * adds a user
+     * @param username
+     * @param type
+     * @param age
+     * @param city
+     * @return
+     */
+    public static String addUser(final String username,
+                                 final String type, final int age, final String city) {
+        // Check for duplicate username
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                return "The username " + username + " is already taken.";
+            }
+        }
+
+        // Add user based on type
+        switch (type.toLowerCase()) {
+            case "artist":
+                // Assuming there is an ArtistUser class
+                users.add(new Artist(username, age, city));
+                break;
+            case "host":
+                // Assuming there is a HostUser class
+                users.add(new Host(username, age, city));
+                break;
+            default:
+                users.add(new NormalUser(username, age, city));
+                break;
+        }
+
+        return "The username " + username + " has been added successfully.";
+    }
+
+    /**
+     * add an album
+     * @param user
+     * @param albumName
+     * @param songList
+     * @return
+     */
+    public static String addAlbum(final User user, final String albumName,
+                                  final List<String> songList) {
+        if (user.getClass() != Artist.class) {
+            return user.getUsername() + " is not an artist.";
+        }
+
+        Artist artist = (Artist) user;
+
+        // Check for existing album
+        if (artist.hasAlbum(albumName)) {
+            return artist.getUsername() + " has another album with the same name.";
+        }
+
+        // Check for duplicate songs in the album
+        HashSet<String> uniqueSongs = new HashSet<>(songList);
+        if (uniqueSongs.size() != songList.size()) {
+            return artist.getUsername() + " has the same song at least twice in this album.";
+        }
+
+        // Add the album
+        artist.addAlbum(albumName, songList);
+
+        return artist.getUsername() + " has added new album successfully.";
+    }
+
+    /**
+     * show an album
+     * @param artist
+     * @return
+     */
+    public static List<Map<String, Object>> showAlbums(final Artist artist) {
+        List<Map<String, Object>> albumDetails = new ArrayList<>();
+
+        // Iterate over the map entries
+        for (Map.Entry<String, Set<String>> entry : artist.getAlbums().entrySet()) {
+            Map<String, Object> details = new HashMap<>();
+            details.put("name", entry.getKey()); // Album name
+            details.put("songs", entry.getValue()); // Song names
+            albumDetails.add(details);
+        }
+
+        return albumDetails;
+    }
+
 
     /**
      * Sets users.
@@ -69,7 +130,8 @@ public final class Admin {
     public static void setUsers(final List<UserInput> userInputList) {
         users = new ArrayList<>();
         for (UserInput userInput : userInputList) {
-            users.add(new NormalUser(userInput.getUsername(), userInput.getAge(), userInput.getCity()));
+            users.add(new NormalUser(userInput.getUsername(),
+                    userInput.getAge(), userInput.getCity()));
         }
     }
 

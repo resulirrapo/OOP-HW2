@@ -7,13 +7,16 @@ import app.audio.Files.Song;
 import app.audio.LibraryEntry;
 import app.searchBar.Filters;
 import app.utils.Enums;
-import fileio.input.CommandInput;
 import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+/**
+ * The type Normal user.
+ * This class extends User and is used to create a normal user.
+ */
 public class NormalUser extends User {
 
     private static List<User> users = new ArrayList<>();
@@ -22,16 +25,19 @@ public class NormalUser extends User {
         setOnline(true);
     }
 
-    public NormalUser(String username, int age, String city) {
+    public NormalUser(final String username, final int age, final String city) {
         super(username, age, city);
         setOnline(true);
     }
 
-    public String switchConnectionStatus() {
+    /**
+     * Gets users after switching status.
+     * @return
+     */
+    final public String switchConnectionStatus() {
         setOnline(!isOnline());
         return this.getUsername() + " has changed status successfully.";
     }
-
 
     /**
      * Search array list.
@@ -67,7 +73,7 @@ public class NormalUser extends User {
      * @return the string
      */
     public String select(final int itemNumber) {
-        if(!this.isOnline()) {
+        if (!this.isOnline()) {
             return getUsername() + " is offline";
         }
 
@@ -91,7 +97,7 @@ public class NormalUser extends User {
      * @return the string
      */
     public String load() {
-        if(!this.isOnline()) {
+        if (!this.isOnline()) {
             return getUsername() + " is offline";
         }
 
@@ -117,7 +123,7 @@ public class NormalUser extends User {
      * @return the string
      */
     public String playPause() {
-        if(!this.isOnline()) {
+        if (!this.isOnline()) {
             return getUsername() + " is offline";
         }
         if (getPlayer().getCurrentAudioFile() == null) {
@@ -136,7 +142,7 @@ public class NormalUser extends User {
      * @return the string
      */
     public String repeat() {
-        if(!this.isOnline()) {
+        if (!this.isOnline()) {
             return getUsername() + " is offline";
         }
         if (getPlayer().getCurrentAudioFile() == null) {
@@ -176,7 +182,7 @@ public class NormalUser extends User {
      * @return the string
      */
     public String shuffle(final Integer seed) {
-        if(!this.isOnline()) {
+        if (!this.isOnline()) {
             return getUsername() + " is offline";
         }
 
@@ -201,7 +207,7 @@ public class NormalUser extends User {
      * @return the string
      */
     public String forward() {
-        if(!this.isOnline()) {
+        if (!this.isOnline()) {
             return getUsername() + " is offline";
         }
 
@@ -223,7 +229,7 @@ public class NormalUser extends User {
      * @return the string
      */
     public String backward() {
-        if(!this.isOnline()) {
+        if (!this.isOnline()) {
             return getUsername() + " is offline";
         }
         if (getPlayer().getCurrentAudioFile() == null) {
@@ -245,7 +251,7 @@ public class NormalUser extends User {
      * @return the string
      */
     public String like() {
-        if(!this.isOnline()) {
+        if (!this.isOnline()) {
             return getUsername() + " is offline";
         }
         if (getPlayer().getCurrentAudioFile() == null) {
@@ -276,7 +282,7 @@ public class NormalUser extends User {
      * @return the string
      */
     public String next() {
-        if(!this.isOnline()) {
+        if (!this.isOnline()) {
             return getUsername() + " is offline";
         }
         if (getPlayer().getCurrentAudioFile() == null) {
@@ -299,7 +305,7 @@ public class NormalUser extends User {
      * @return the string
      */
     public String prev() {
-        if(!this.isOnline()) {
+        if (!this.isOnline()) {
             return getUsername() + " is offline";
         }
         if (getPlayer().getCurrentAudioFile() == null) {
@@ -320,7 +326,7 @@ public class NormalUser extends User {
      * @return the string
      */
     public String createPlaylist(final String name, final int timestamp) {
-        if(!this.isOnline()) {
+        if (!this.isOnline()) {
             return getUsername() + " is offline";
         }
         if (getPlaylists().stream().anyMatch(playlist -> playlist.getName().equals(name))) {
@@ -338,7 +344,7 @@ public class NormalUser extends User {
      * @return the string
      */
     public String addRemoveInPlaylist(final int id) {
-        if(!this.isOnline()) {
+        if (!this.isOnline()) {
             return getUsername() + " is offline";
         }
         if (getPlayer().getCurrentAudioFile() == null) {
@@ -371,7 +377,7 @@ public class NormalUser extends User {
      * @return the string
      */
     public String switchPlaylistVisibility(final Integer playlistId) {
-        if(!this.isOnline()) {
+        if (!this.isOnline()) {
             return getUsername() + " is offline";
         }
         if (playlistId > getPlaylists().size()) {
@@ -394,7 +400,7 @@ public class NormalUser extends User {
      * @return the array list
      */
     public ArrayList<PlaylistOutput> showPlaylists() {
-        if(!this.isOnline()) {
+        if (!this.isOnline()) {
             return new ArrayList<>();
         }
         ArrayList<PlaylistOutput> playlistOutputs = new ArrayList<>();
@@ -411,7 +417,7 @@ public class NormalUser extends User {
      * @return the string
      */
     public String follow() {
-        if(!this.isOnline()) {
+        if (!this.isOnline()) {
             return getUsername() + " is offline";
         }
         LibraryEntry selection = getSearchBar().getLastSelected();

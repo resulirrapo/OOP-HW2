@@ -2,7 +2,6 @@ package fileio.input;
 
 import lombok.Data;
 
-import java.lang.reflect.AnnotatedArrayType;
 import java.util.ArrayList;
 
 @Data
@@ -35,7 +34,7 @@ public final class CommandInput {
         return age;
     }
 
-    public void setAge(Integer age) {
+    public void setAge(final Integer age) {
         this.age = age;
     }
 

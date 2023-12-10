@@ -6,12 +6,12 @@ import app.audio.Collections.PlaylistOutput;
 import app.audio.Files.AudioFile;
 import app.audio.Files.Song;
 import app.audio.LibraryEntry;
+import app.pagesistem.Page;
 import app.player.Player;
 import app.player.PlayerStats;
 import app.searchBar.Filters;
 import app.searchBar.SearchBar;
 import app.utils.Enums;
-import fileio.input.CommandInput;
 import lombok.Data;
 import lombok.Getter;
 
@@ -38,6 +38,7 @@ public abstract class User {
     private SearchBar searchBar;
     private boolean lastSearched;
     private boolean isOnline = false;
+    private Page currentPage;
 
     /**
      * Instantiates a new User.
@@ -86,6 +87,18 @@ public abstract class User {
          * @return A message indicating the result of the operation.
          */
         public abstract String switchConnectionStatus();
+
+    /**
+     * Change page.
+     * @param newPage
+     */
+        public final void changePage(final Page newPage) {
+            this.currentPage = newPage;
+        }
+
+        public final Page getCurrentPage() {
+            return currentPage;
+        }
 
 
     /**

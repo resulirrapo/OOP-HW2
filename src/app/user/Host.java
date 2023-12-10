@@ -2,20 +2,25 @@ package app.user;
 
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Data
+/**
+ * The type Host.
+ * This class extends User and is used to create a host.
+ */
 public class Host extends User {
 
     public Host() {
     }
 
-    public Host(String username, int age, String city) {
+    public Host(final String username, final int age, final String city) {
         super(username, age, city);
     }
 
-    public String switchConnectionStatus() {
+    /**
+     * Switch connection status of users
+     * @return
+     */
+    final public String switchConnectionStatus() {
         return this.getUsername() + "is not a normal user";
     }
 

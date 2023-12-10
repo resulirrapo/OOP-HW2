@@ -3,13 +3,18 @@ package app;
 import app.audio.Collections.PlaylistOutput;
 import app.player.PlayerStats;
 import app.searchBar.Filters;
+import app.user.Artist;
 import app.user.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.input.CommandInput;
+import fileio.input.SongInput;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * The type Command runner.
@@ -488,7 +493,9 @@ public final class CommandRunner {
 
         return objectNode;
     }
-
+/**
+ * switchConnectionStatus object node.
+ */
     public static ObjectNode switchConnectionStatus(final CommandInput commandInput) {
         User user = Admin.getUser(commandInput.getUsername());
         String message;
@@ -505,6 +512,11 @@ public final class CommandRunner {
         return objectNode;
     }
 
+    /**
+     * Gets online users.
+     * @param commandInput
+     * @return
+     */
     public static ObjectNode getOnlineUsers(final CommandInput commandInput) {
         List<User> users = Admin.getOnlineUsers();
 
@@ -517,21 +529,104 @@ public final class CommandRunner {
 
         return objectNode;
     }
-//    public static ObjectNode addUser(final CommandInput commandInput) {
-//        User user = Admin.getUser(commandInput.getUsername());
+
+    /**
+     * Adds an user
+     * @param commandInput
+     * @return
+     */
+    public static ObjectNode addUser(final CommandInput commandInput) {
+        String message = Admin.addUser(commandInput.getUsername(),
+                commandInput.getType(), commandInput.getAge(),
+                commandInput.getCity());
+
+            ObjectNode objectNode = objectMapper.createObjectNode();
+            objectNode.put("command", commandInput.getCommand());
+            objectNode.put("user", commandInput.getUsername());
+            objectNode.put("timestamp", commandInput.getTimestamp());
+            objectNode.put("message", message);
+
+            return objectNode;
+        }
+
+    /**
+     * Adds an album
+     * @param commandInput
+     * @return
+     */
+    public static ObjectNode addAlbum(final CommandInput commandInput) {
+        User user = Admin.getUser(commandInput.getUsername());
+        String albumName = commandInput.getName();
+        List<String> songNames = commandInput.getSongs().stream()
+                .map(SongInput::getName)
+                .collect(Collectors.toList());
+
+        String message;
+        if (user == null) {
+            message = "The username " + commandInput.getUsername() + " doesn't exist.";
+        } else if (!(user instanceof Artist)) {
+            message = commandInput.getUsername() + " is not an artist.";
+        } else {
+            Artist artist = (Artist) user;
+            message = Admin.addAlbum(artist, albumName, songNames);
+        }
+
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        objectNode.put("command", commandInput.getCommand());
+        objectNode.put("user", commandInput.getUsername());
+        objectNode.put("timestamp", commandInput.getTimestamp());
+        objectNode.put("message", message);
+
+        return objectNode;
+    }
+
+    /**
+     * ShowAlbum object node.
+     * @param commandInput
+     * @return
+     */
+    public static ObjectNode showAlbum(final CommandInput commandInput) {
+        User user = Admin.getUser(commandInput.getUsername());
+
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        objectNode.put("command", commandInput.getCommand());
+        objectNode.put("user", commandInput.getUsername());
+        objectNode.put("timestamp", commandInput.getTimestamp());
+
+            Artist artist = (Artist) user;
+            List<Map<String, Object>> albums = Admin.showAlbums(artist);
+
+            ArrayNode albumsArray = objectMapper.createArrayNode();
+            for (Map<String, Object> album : albums) {
+                ObjectNode albumNode = objectMapper.createObjectNode();
+                albumNode.put("name", (String) album.get("name"));
+                albumNode.putPOJO("songs", album.get("songs"));
+                albumsArray.add(albumNode);
+            }
+            objectNode.set("result", albumsArray);
+
+        return objectNode;
+    }
+//        public static ObjectNode printCurrentPage(final CommandInput commandInput) {
+//            User user = Admin.getUser(commandInput.getUsername());
 //
-//        if (user != null) {
-//        List<User>  message = user.addUser(commandInput.getType(), commandInput.getAge(),commandInput.getCity());
-//            ObjectNode objectNode = objectMapper.createObjectNode();
-//            objectNode.put("command", commandInput.getCommand());
-//            objectNode.put("timestamp", commandInput.getTimestamp());
-//            objectNode.put("type", commandInput.getType());
-//            objectNode.put("user", commandInput.getUsername());
-//            objectNode.put("age", commandInput.getAge());
-//            objectNode.put("city", commandInput.getCity());
-//            objectNode.putPOJO("message", message);
-//            return objectNode;
+//                String message = HomePage.printCurrentPage(user);
+//
+//                ObjectNode objectNode = objectMapper.createObjectNode();
+//                objectNode.put("user", commandInput.getUsername());
+//                objectNode.put("command", commandInput.getCommand());
+//                objectNode.put("timestamp", commandInput.getTimestamp());
+//                objectNode.put("message", message);
+//
+//                return objectNode;
 //        }
-//        return null;
+//    public static String changePage(User user, String nextPage) {
+//        if (nextPage.equals("HomePage")) {
+//            user.changePage(new HomePage());
+//            return user.getUsername() + " accessed HomePage successfully.";
+//        }
+//        // Handle other page types similarly
+//
+//        return user.getUsername() + " is trying to access a non-existent page.";
 //    }
 }
