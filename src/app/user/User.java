@@ -6,7 +6,6 @@ import app.audio.Collections.PlaylistOutput;
 import app.audio.Files.AudioFile;
 import app.audio.Files.Song;
 import app.audio.LibraryEntry;
-import app.pagesistem.Page;
 import app.player.Player;
 import app.player.PlayerStats;
 import app.searchBar.Filters;
@@ -38,7 +37,7 @@ public abstract class User {
     private SearchBar searchBar;
     private boolean lastSearched;
     private boolean isOnline = false;
-    private Page currentPage;
+    private String page;
 
     /**
      * Instantiates a new User.
@@ -89,18 +88,35 @@ public abstract class User {
         public abstract String switchConnectionStatus();
 
     /**
-     * Change page.
-     * @param newPage
+     * Formats the content of the current page.
+     * @param currentPage
+     * @return
      */
-        public final void changePage(final Page newPage) {
-            this.currentPage = newPage;
-        }
+        public abstract String formatPageContent(String currentPage);
 
-        public final Page getCurrentPage() {
-            return currentPage;
-        }
+    /**
+     * Adds a new event to the library.
+     * @param eventName
+     * @param eventDescription
+     * @param eventDate
+     * @return
+     */
+    public String addEvent(final String eventName,
+                           final String eventDescription, final String eventDate) {
+        return getUsername() + " is not an artist.";
+    }
 
-
+    /**
+     * Adds a new merchandise to the library.
+     * @param merchName
+     * @param merchDescription
+     * @param merchPrice
+     * @return
+     */
+    public String addMerch(final String merchName,
+                           final String merchDescription, final Integer merchPrice) {
+        return getUsername() + " has added new merchandise successfully.";
+    }
     /**
      * Select string.
      *

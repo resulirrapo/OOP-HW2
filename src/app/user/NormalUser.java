@@ -20,14 +20,17 @@ import java.util.List;
 public class NormalUser extends User {
 
     private static List<User> users = new ArrayList<>();
+    private static final int MAXSONGS = 5;
 
     public NormalUser() {
         setOnline(true);
+        setPage("HomePage");
     }
 
     public NormalUser(final String username, final int age, final String city) {
         super(username, age, city);
         setOnline(true);
+        setPage("HomePage");
     }
 
     /**
@@ -37,6 +40,54 @@ public class NormalUser extends User {
     final public String switchConnectionStatus() {
         setOnline(!isOnline());
         return this.getUsername() + " has changed status successfully.";
+    }
+
+    /**
+     * formats the page content
+     * @param pageName
+     * @return
+     */
+    public String formatPageContent(final String pageName) {
+
+        if (pageName.equals("HomePage")) {
+            return formatHomePage();
+        } else {
+            return "Error";
+        }
+    }
+
+    private String formatHomePage() {
+        StringBuilder sb = new StringBuilder();
+        List<Song> likedSongs = getLikedSongs();
+        if (!likedSongs.isEmpty()) {
+            sb.append("Liked songs:\n\t[");
+            likedSongs.stream()
+                    .limit(MAXSONGS) // Limit to 5 songs
+                    .forEach(song -> sb.append(song.getName()).append(", "));
+            sb.setLength(sb.length() - 2); // Remove the last comma and space
+            sb.append("]");
+        } else {
+            sb.append("Liked songs:\n\t[]");
+        }
+
+// Add a newline between liked songs and followed playlists
+        sb.append("\n\n");
+
+// Format followed playlists
+        List<Playlist> followedPlaylists = getFollowedPlaylists();
+        if (!followedPlaylists.isEmpty()) {
+            sb.append("Followed Playlists:\n\t[");
+            followedPlaylists.stream()
+                    .limit(MAXSONGS) // Limit to 5 playlists
+                    .forEach(playlist -> sb.append(playlist.getName()).append(" - ")
+                            .append(playlist.getOwner()).append(", "));
+            sb.setLength(sb.length() - 2); // Remove the last comma and space
+            sb.append("]");
+        } else {
+            sb.append("Followed Playlists:\n\t[]");
+        }
+
+        return sb.toString();
     }
 
     /**
@@ -252,7 +303,7 @@ public class NormalUser extends User {
      */
     public String like() {
         if (!this.isOnline()) {
-            return getUsername() + " is offline";
+            return getUsername() + " is offline.";
         }
         if (getPlayer().getCurrentAudioFile() == null) {
             return "Please load a source before liking or unliking.";

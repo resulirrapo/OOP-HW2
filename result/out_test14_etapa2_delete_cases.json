@@ -128,6 +128,11 @@
   "timestamp" : 480,
   "message" : "Please load a source before setting the repeat status."
 }, {
+  "user" : "bob35",
+  "command" : "printCurrentPage",
+  "timestamp" : 525,
+  "message" : "Liked songs:\n\t[]\n\nFollowed Playlists:\n\t[Playlist bengos - melodicwanderer]"
+}, {
   "command" : "search",
   "user" : "soundseeker21",
   "timestamp" : 625,
@@ -185,4 +190,9 @@
   "user" : "carol19",
   "timestamp" : 7505,
   "message" : "Please load a source before setting the repeat status."
+}, {
+  "user" : "bob35",
+  "command" : "printCurrentPage",
+  "timestamp" : 7900,
+  "message" : "Liked songs:\n\t[]\n\nFollowed Playlists:\n\t[Playlist bengos - melodicwanderer]"
 } ]

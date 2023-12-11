@@ -61,7 +61,7 @@ public final class SearchBar {
 
         switch (type) {
             case "song":
-                entries = new ArrayList<>(Admin.getSongs());
+                entries = new ArrayList<>(Admin.getSongs().stream().toList());
 
                 if (filters.getName() != null) {
                     entries = filterByName(entries, filters.getName());

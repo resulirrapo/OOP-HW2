@@ -34,7 +34,7 @@
   "command" : "like",
   "user" : "alice22",
   "timestamp" : 280,
-  "message" : "alice22 is offline"
+  "message" : "alice22 is offline."
 }, {
   "command" : "addUser",
   "user" : "melodymaster",
@@ -95,6 +95,11 @@
   "user" : "alice22",
   "timestamp" : 460,
   "message" : "Please load a source before liking or unliking."
+}, {
+  "user" : "alice22",
+  "command" : "printCurrentPage",
+  "timestamp" : 480,
+  "message" : "Liked songs:\n\t[]\n\nFollowed Playlists:\n\t[]"
 }, {
   "command" : "addAlbum",
   "user" : "melodymaster",

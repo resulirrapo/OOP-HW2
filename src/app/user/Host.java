@@ -24,4 +24,13 @@ public class Host extends User {
         return this.getUsername() + "is not a normal user";
     }
 
+    /**
+     * Format page content
+     * @param pageName
+     * @return
+     */
+    public final String formatPageContent(final String pageName) {
+        return "Host";
+    }
+
 }

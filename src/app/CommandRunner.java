@@ -607,19 +607,25 @@ public final class CommandRunner {
 
         return objectNode;
     }
-//        public static ObjectNode printCurrentPage(final CommandInput commandInput) {
-//            User user = Admin.getUser(commandInput.getUsername());
-//
-//                String message = HomePage.printCurrentPage(user);
-//
-//                ObjectNode objectNode = objectMapper.createObjectNode();
-//                objectNode.put("user", commandInput.getUsername());
-//                objectNode.put("command", commandInput.getCommand());
-//                objectNode.put("timestamp", commandInput.getTimestamp());
-//                objectNode.put("message", message);
-//
-//                return objectNode;
-//        }
+
+    /**
+     * Prints the current page
+     * @param commandInput
+     * @return
+     */
+    public static ObjectNode printCurrentPage(final CommandInput commandInput) {
+        User user = Admin.getUser(commandInput.getUsername());
+
+        String message = user.formatPageContent(user.getPage());
+
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        objectNode.put("user", commandInput.getUsername());
+        objectNode.put("command", commandInput.getCommand());
+        objectNode.put("timestamp", commandInput.getTimestamp());
+        objectNode.put("message", message);
+
+        return objectNode;
+    }
 //    public static String changePage(User user, String nextPage) {
 //        if (nextPage.equals("HomePage")) {
 //            user.changePage(new HomePage());
@@ -629,4 +635,62 @@ public final class CommandRunner {
 //
 //        return user.getUsername() + " is trying to access a non-existent page.";
 //    }
+
+    /**
+     * Adds an event
+     * @param commandInput
+     * @return
+     */
+    public static ObjectNode addEvent(final CommandInput commandInput) {
+        User user = Admin.getUser(commandInput.getUsername());
+
+        String eventName = commandInput.getName();
+        String eventDate = commandInput.getDate();
+        String eventDescription = commandInput.getDescription();
+
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        objectNode.put("command", commandInput.getCommand());
+        objectNode.put("user", commandInput.getUsername());
+        objectNode.put("timestamp", commandInput.getTimestamp());
+
+        if (user == null) {
+            objectNode.put("message",
+                    "The username " + commandInput.getUsername() + " doesn't exist.");
+            return objectNode;
+        }
+
+        // The addEvent method is called, and it handles all the logic
+        String message = user.addEvent(eventName, eventDescription, eventDate);
+        objectNode.put("message", message);
+        return objectNode;
+    }
+
+    /**
+     * Adds a merch
+     * @param commandInput
+     * @return
+     */
+    public static ObjectNode addMerch(final CommandInput commandInput) {
+        User user = Admin.getUser(commandInput.getUsername());
+
+        String merchName = commandInput.getName();
+        String merchDescription = commandInput.getDescription();
+        Integer merchPrice = commandInput.getPrice();
+
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        objectNode.put("command", commandInput.getCommand());
+        objectNode.put("user", commandInput.getUsername());
+        objectNode.put("timestamp", commandInput.getTimestamp());
+
+        if (user == null) {
+            objectNode.put("message",
+                    "The username " + commandInput.getUsername() + " doesn't exist.");
+            return objectNode;
+        }
+
+        // The addEvent method is called, and it handles all the logic
+        String message = user.addMerch(merchName, merchDescription, merchPrice);
+        objectNode.put("message", message);
+        return objectNode;
+    }
 }
