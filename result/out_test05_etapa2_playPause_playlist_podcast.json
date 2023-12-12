@@ -31,11 +31,36 @@
   "timestamp" : 50,
   "message" : "The username soundseeker has been added successfully."
 }, {
+  "command" : "addPodcast",
+  "user" : "soundseeker",
+  "timestamp" : 51,
+  "message" : "soundseeker has added new podcast successfully."
+}, {
+  "command" : "addPodcast",
+  "user" : "alice22",
+  "timestamp" : 52,
+  "message" : "alice22 is not a host."
+}, {
+  "command" : "addPodcast",
+  "user" : "soundseeker",
+  "timestamp" : 53,
+  "message" : "soundseeker has added new podcast successfully."
+}, {
+  "command" : "addPodcast",
+  "user" : "soundseeker",
+  "timestamp" : 53,
+  "message" : "soundseeker has another podcast with the same name."
+}, {
   "command" : "search",
   "user" : "alice22",
   "timestamp" : 55,
   "message" : "Search returned 0 results",
   "results" : [ ]
+}, {
+  "command" : "addAnnouncement",
+  "user" : "soundseeker",
+  "timestamp" : 56,
+  "message" : "soundseeker has successfully added new announcement."
 }, {
   "command" : "select",
   "user" : "alice22",
@@ -138,6 +163,11 @@
   "timestamp" : 3225,
   "message" : "Playback loaded successfully."
 }, {
+  "command" : "addAnnouncement",
+  "user" : "soundseeker",
+  "timestamp" : 3226,
+  "message" : "soundseeker has successfully added new announcement."
+}, {
   "command" : "addRemoveInPlaylist",
   "user" : "alice22",
   "timestamp" : 3230,
@@ -159,6 +189,11 @@
   "timestamp" : 3245,
   "message" : "Playback loaded successfully."
 }, {
+  "command" : "removeAnnouncement",
+  "user" : "soundseeker",
+  "timestamp" : 3246,
+  "message" : "soundseeker has no announcement with the given name."
+}, {
   "command" : "addUser",
   "user" : "magichost",
   "timestamp" : 3247,
@@ -169,10 +204,26 @@
   "timestamp" : 3247,
   "message" : "The username magichost is already taken."
 }, {
+  "command" : "showPodcasts",
+  "user" : "soundseeker",
+  "timestamp" : 3250,
+  "result" : [ {
+    "name" : "Auditory Adventures",
+    "episodes" : [ "Exploring Sonic Landscapes", "The Future of Music Technology", "Cultural Beats" ]
+  }, {
+    "name" : "Harmony & History",
+    "episodes" : [ "The Roots of Blues", "Classical Music's Modern Impact", "Jazz Journeys", "The Folk Revival" ]
+  } ]
+}, {
   "command" : "addRemoveInPlaylist",
   "user" : "alice22",
   "timestamp" : 3250,
   "message" : "Successfully added to playlist."
+}, {
+  "command" : "removeAnnouncement",
+  "user" : "soundseeker",
+  "timestamp" : 3251,
+  "message" : "soundseeker has no announcement with the given name."
 }, {
   "command" : "search",
   "user" : "alice22",

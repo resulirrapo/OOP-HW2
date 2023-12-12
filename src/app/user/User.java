@@ -11,6 +11,7 @@ import app.player.PlayerStats;
 import app.searchBar.Filters;
 import app.searchBar.SearchBar;
 import app.utils.Enums;
+import fileio.input.EpisodeInput;
 import lombok.Data;
 import lombok.Getter;
 
@@ -95,6 +96,20 @@ public abstract class User {
         public abstract String formatPageContent(String currentPage);
 
     /**
+     * Adds a new album
+     * @param albumName
+     * @param releaseYear
+     * @param albumDescription
+     * @param songNames
+     * @return
+     */
+        public String addAlbum(final String albumName,
+                               final Integer releaseYear, final String albumDescription,
+                               final List<String> songNames) {
+            return getUsername() + " is not an artist.";
+        }
+
+    /**
      * Adds a new event to the library.
      * @param eventName
      * @param eventDescription
@@ -116,6 +131,56 @@ public abstract class User {
     public String addMerch(final String merchName,
                            final String merchDescription, final Integer merchPrice) {
         return getUsername() + " has added new merchandise successfully.";
+    }
+
+    /**
+     * Adds a new podcast
+     * @param podcastName
+     * @param podcastDescription
+     * @param episodeInputs
+     * @return
+     */
+    public String addPodcast(final String podcastName,
+                             final String podcastDescription,
+                             final List<EpisodeInput> episodeInputs) {
+        return getUsername() + " is not a host.";
+    }
+
+    /**
+     * Adds a new announcement
+     * @param announcementName
+     * @param announcementDescription
+     * @return
+     */
+    public String addAnnouncement(final String announcementName,
+                                  final String announcementDescription) {
+        return getUsername() + " is not a host.";
+    }
+
+    /**
+     * Removes an announcement
+     * @param announcementName
+     * @return
+     */
+    public String removeAnnouncement(final String announcementName) {
+        return getUsername() + " is not a host.";
+    }
+
+    /**
+     * removes album
+     * @param albumName
+     * @return
+     */
+    public String removeAlbum(final String albumName) {
+        return getUsername() + " is not an artist.";
+    }
+
+    /**
+     * Gets user type.
+     * @return
+     */
+    public int getUserType() {
+        return 0;
     }
     /**
      * Select string.

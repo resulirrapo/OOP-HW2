@@ -2,8 +2,6 @@ Starting audit...
 [ERROR] C:\Users\rrapo\Desktop\etapa2\.\src\app\Admin.java:7:16: Using the '.*' form of import should be avoided - app.user.*. [AvoidStarImport]
 [ERROR] C:\Users\rrapo\Desktop\etapa2\.\src\app\Admin.java:14:17: Using the '.*' form of import should be avoided - java.util.*. [AvoidStarImport]
 [ERROR] C:\Users\rrapo\Desktop\etapa2\.\src\app\user\Artist.java:7:17: Using the '.*' form of import should be avoided - java.util.*. [AvoidStarImport]
-[ERROR] C:\Users\rrapo\Desktop\etapa2\.\src\app\user\Artist.java:38:11: 'public' modifier out of order with the JLS suggestions. [ModifierOrder]
-[ERROR] C:\Users\rrapo\Desktop\etapa2\.\src\app\user\Host.java:23:11: 'public' modifier out of order with the JLS suggestions. [ModifierOrder]
-[ERROR] C:\Users\rrapo\Desktop\etapa2\.\src\app\user\NormalUser.java:40:11: 'public' modifier out of order with the JLS suggestions. [ModifierOrder]
+[ERROR] C:\Users\rrapo\Desktop\etapa2\.\src\app\user\Host.java:8:17: Using the '.*' form of import should be avoided - java.util.*. [AvoidStarImport]
 Audit done.
-Checkstyle ends with 6 errors.
+Checkstyle ends with 4 errors.

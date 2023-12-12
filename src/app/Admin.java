@@ -51,7 +51,6 @@ public final class Admin {
                 return "The username " + username + " is already taken.";
             }
         }
-
         // Add user based on type
         switch (type.toLowerCase()) {
             case "artist":
@@ -71,36 +70,64 @@ public final class Admin {
     }
 
     /**
-     * add an album
-     * @param user
-     * @param albumName
-     * @param songList
+     * gets all users
      * @return
      */
-    public static String addAlbum(final User user, final String albumName,
-                                  final List<String> songList) {
-        if (user.getClass() != Artist.class) {
-            return user.getUsername() + " is not an artist.";
+    public static List<String> getAllUsers() {
+        List<String> allUsers = new ArrayList<>();
+        for (User user : users) {
+            allUsers.add(user.getUsername());
         }
 
-        Artist artist = (Artist) user;
-
-        // Check for existing album
-        if (artist.hasAlbum(albumName)) {
-            return artist.getUsername() + " has another album with the same name.";
-        }
-
-        // Check for duplicate songs in the album
-        HashSet<String> uniqueSongs = new HashSet<>(songList);
-        if (uniqueSongs.size() != songList.size()) {
-            return artist.getUsername() + " has the same song at least twice in this album.";
-        }
-
-        // Add the album
-        artist.addAlbum(albumName, songList);
-
-        return artist.getUsername() + " has added new album successfully.";
+        return allUsers;
     }
+
+//        public static String deleteUser(String username) {
+//            for (User user : users) {
+//                if (user.getUsername().equals(username)) {
+//                    users.remove(user);
+//                    return "The username " + username + " was successfully deleted.";
+//                }
+////                } else if (user.getUserType() == 1) {
+////                    return username + " can't be deleted.";
+////                } else if (user.getUserType() == 2) {
+////                    return username + " can't be deleted.";
+////                }
+//            }
+//            return "The username " + username + " doesn't exist.";
+//        }
+
+//    /**
+//     * add an album
+//     * @param user
+//     * @param albumName
+//     * @param songList
+//     * @return
+//     */
+//    public static String addAlbum(final User user, final String albumName,
+//                                  final List<String> songList) {
+//        if (user.getClass() != Artist.class) {
+//            return user.getUsername() + " is not an artist.";
+//        }
+//
+//        Artist artist = (Artist) user;
+//
+//        // Check for existing album
+//        if (artist.hasAlbum(albumName)) {
+//            return artist.getUsername() + " has another album with the same name.";
+//        }
+//
+//        // Check for duplicate songs in the album
+//        HashSet<String> uniqueSongs = new HashSet<>(songList);
+//        if (uniqueSongs.size() != songList.size()) {
+//            return artist.getUsername() + " has the same song at least twice in this album.";
+//        }
+//
+//        // Add the album
+//        artist.addAlbum(albumName, songList);
+//
+//        return artist.getUsername() + " has added new album successfully.";
+//    }
 
     /**
      * show an album

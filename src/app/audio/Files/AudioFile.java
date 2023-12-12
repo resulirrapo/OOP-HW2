@@ -11,4 +11,12 @@ public abstract class AudioFile extends LibraryEntry {
         super(name);
         this.duration = duration;
     }
+
+    /**
+     * Get the name of the album
+     * @return
+     */
+    public String getAlbumName() {
+        return null;
+    }
 }

@@ -3,6 +3,7 @@ package app.user;
 import app.audio.Collections.AudioCollection;
 import app.audio.Collections.Playlist;
 import app.audio.Collections.PlaylistOutput;
+import app.audio.Files.AudioFile;
 import app.audio.Files.Song;
 import app.audio.LibraryEntry;
 import app.searchBar.Filters;
@@ -37,7 +38,7 @@ public class NormalUser extends User {
      * Gets users after switching status.
      * @return
      */
-    final public String switchConnectionStatus() {
+    public String switchConnectionStatus() {
         setOnline(!isOnline());
         return this.getUsername() + " has changed status successfully.";
     }
@@ -88,6 +89,29 @@ public class NormalUser extends User {
         }
 
         return sb.toString();
+    }
+
+    /**
+     * checks the loaed album
+     * @param albumName
+     * @return
+     */
+    public boolean hasAlbumLoaded(final String albumName) {
+        AudioFile currentAudioFile = this.getPlayer().getCurrentAudioFile();
+        if (currentAudioFile != null) {
+            String loadedAlbumName = currentAudioFile.getAlbumName();
+            return albumName.equals(loadedAlbumName);
+        }
+        return false;
+    }
+
+    /**
+     * checks if the song from album is loaded
+     * @param albumName
+     * @return
+     */
+    public boolean hasSongFromAlbumLoaded(final String albumName) {
+        return hasAlbumLoaded(albumName);
     }
 
     /**

@@ -5,6 +5,7 @@ import lombok.Data;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 /**
@@ -15,6 +16,7 @@ public class Artist extends User {
     private Map<String, Set<String>> albums;
     private List<Event> events = new ArrayList<>();
     private List<Merch> merchList = new ArrayList<>();
+    private static List<User> users = new ArrayList<>();
     public static final int MAXYEAR = 2023;
     public static final int MINYEAR = 1900;
     public static final int MAXMONTH = 12;
@@ -35,12 +37,8 @@ public class Artist extends User {
      * Switch connection status of the user
      * @return
      */
-    final public String switchConnectionStatus() {
+    public String switchConnectionStatus() {
         return this.getUsername() + "is not a normal user";
-    }
-
-    public final Map<String, Set<String>> getAlbums() {
-        return albums;
     }
 
     /**
@@ -48,19 +46,43 @@ public class Artist extends User {
      * @param albumName
      * @return
      */
-    public final boolean hasAlbum(final String albumName) {
-        return albums.containsKey(albumName);
+    public final String addAlbum(final String albumName,
+                               final Integer releaseYear, final String albumDescription,
+                               final List<String> songNames) {
+        if (albums.containsKey(albumName)) {
+            return getUsername() + "has another album with the same name.";
+        } else if (songNames.stream().collect(Collectors.groupingBy(e -> e, Collectors.counting()))
+                        .values().stream().anyMatch(e -> e > 1)) {
+            return "Album " + albumName + " has duplicate songs.";
+        }
+        return getUsername() + " has added new album successfully.";
     }
 
     /**
-     * Add an album to the artist
+     * removes an album
      * @param albumName
-     * @param songList
+     * @return
      */
-    public final void addAlbum(final String albumName, final List<String> songList) {
-        albums.put(albumName, new HashSet<>(songList));
-    }
+    public String removeAlbum(final String albumName) {
+        if (!albums.containsKey(albumName)) {
+            return getUsername() + " doesn't have the album with the given name.";
+        } else {
+            // Check if any normal user has the album or a song from it loaded
+            for (User user : users) {
+                if (user.getUserType() == 0) {
+                    NormalUser normalUser = (NormalUser) user;
+                    if (normalUser.hasAlbumLoaded(albumName)
+                            || normalUser.hasSongFromAlbumLoaded(albumName)) {
+                        return "can't delete this album.";
+                    }
+                }
+            }
+        }
 
+        // Remove the album
+        albums.remove(albumName);
+        return getUsername() + " deleted the album successfully.";
+    }
 
     /**
      * Add a song to an album
@@ -141,6 +163,15 @@ public class Artist extends User {
     }
 
     /**
+     * Get the user type
+     * @return
+     */
+    @Override
+    public int getUserType() {
+        return 1;
+    }
+
+    /**
      * Add a merchandise to the artist
      * @param merchName
      * @param merchDescription
@@ -164,4 +195,4 @@ public class Artist extends User {
 
             return getUsername() + " has added new merchandise successfully.";
         }
-    }
+}

@@ -42,6 +42,11 @@ public final class Song extends AudioFile {
         this.artist = artist;
         this.likes = 0;
     }
+    @Override
+    public String getAlbumName() {
+        // Return the album name of the song
+        return this.album; // Assuming there's a field 'albumName' in the Song class
+    }
 
     @Override
     public boolean matchesAlbum(final String albumName) {

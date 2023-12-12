@@ -49,10 +49,7 @@
   "command" : "showAlbums",
   "user" : "melodymaster",
   "timestamp" : 350,
-  "result" : [ {
-    "name" : "Harmonic Horizons",
-    "songs" : [ "Synth Symphony", "Retro Rhythms", "Digital Dreams", "Vibrant Echoes", "Night Pulse" ]
-  } ]
+  "result" : [ ]
 }, {
   "command" : "addUser",
   "user" : "alice22",
@@ -104,21 +101,15 @@
   "command" : "addAlbum",
   "user" : "melodymaster",
   "timestamp" : 515,
-  "message" : "melodymaster has another album with the same name."
+  "message" : "melodymaster has added new album successfully."
 }, {
   "command" : "showAlbums",
   "user" : "melodymaster",
   "timestamp" : 550,
-  "result" : [ {
-    "name" : "Harmonic Horizons",
-    "songs" : [ "Synth Symphony", "Retro Rhythms", "Digital Dreams", "Vibrant Echoes", "Night Pulse" ]
-  }, {
-    "name" : "Echoes of Harmony",
-    "songs" : [ "Melodic Mirage", "Pop Serenade" ]
-  } ]
+  "result" : [ ]
 }, {
   "command" : "addAlbum",
   "user" : "melodymaster",
   "timestamp" : 560,
-  "message" : "melodymaster has the same song at least twice in this album."
+  "message" : "Album Symphony of Shadows has duplicate songs."
 } ]

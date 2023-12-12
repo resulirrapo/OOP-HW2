@@ -104,6 +104,11 @@
   "message" : "Search returned 1 results",
   "results" : [ "Elevate" ]
 }, {
+  "command" : "removeAlbum",
+  "user" : "Ed Sheeran",
+  "timestamp" : 375,
+  "message" : "The username Ed Sheeran doesn't exist."
+}, {
   "command" : "select",
   "user" : "bob35",
   "timestamp" : 390,
@@ -128,6 +133,11 @@
   "command" : "printCurrentPage",
   "timestamp" : 430,
   "message" : "Liked songs:\n\t[]\n\nFollowed Playlists:\n\t[]"
+}, {
+  "command" : "removeAlbum",
+  "user" : "melodymaster",
+  "timestamp" : 430,
+  "message" : "melodymaster doesn't have the album with the given name."
 }, {
   "command" : "search",
   "user" : "bob35",
@@ -212,6 +222,11 @@
   "user" : "carol19",
   "timestamp" : 1115,
   "message" : "Please load a source before liking or unliking."
+}, {
+  "command" : "removeAlbum",
+  "user" : "melodymaster",
+  "timestamp" : 1200,
+  "message" : "melodymaster doesn't have the album with the given name."
 }, {
   "command" : "search",
   "user" : "carol19",
@@ -350,6 +365,11 @@
     "shuffle" : true,
     "paused" : false
   }
+}, {
+  "command" : "removeAlbum",
+  "user" : "melodymaster",
+  "timestamp" : 3000,
+  "message" : "melodymaster doesn't have the album with the given name."
 }, {
   "command" : "status",
   "user" : "bob35",
