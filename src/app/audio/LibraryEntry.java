@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * The type Library entry.
  */
 @Getter
-public abstract class LibraryEntry {
+public class LibraryEntry {
     private final String name;
 
     /**
@@ -37,6 +37,7 @@ public abstract class LibraryEntry {
      * @return the boolean
      */
     public boolean matchesAlbum(final String album) {
+
         return false;
     }
 
@@ -117,6 +118,15 @@ public abstract class LibraryEntry {
      * @return the boolean
      */
     public boolean matchesFollowers(final String followers) {
+        return false;
+    }
+
+    /**
+     * Matches description boolean.
+     * @param description
+     * @return
+     */
+    public boolean matchesDescription(final String description) {
         return false;
     }
 }

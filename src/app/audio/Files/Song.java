@@ -44,8 +44,7 @@ public final class Song extends AudioFile {
     }
     @Override
     public String getAlbumName() {
-        // Return the album name of the song
-        return this.album; // Assuming there's a field 'albumName' in the Song class
+        return this.album;
     }
 
     @Override

@@ -3,7 +3,6 @@ package app.user;
 import app.audio.Collections.AudioCollection;
 import app.audio.Collections.Playlist;
 import app.audio.Collections.PlaylistOutput;
-import app.audio.Files.AudioFile;
 import app.audio.Files.Song;
 import app.audio.LibraryEntry;
 import app.searchBar.Filters;
@@ -11,6 +10,7 @@ import app.utils.Enums;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Data
@@ -21,6 +21,7 @@ import java.util.List;
 public class NormalUser extends User {
 
     private static List<User> users = new ArrayList<>();
+    private String currentPage = "HomePage";
     private static final int MAXSONGS = 5;
 
     public NormalUser() {
@@ -32,6 +33,23 @@ public class NormalUser extends User {
         super(username, age, city);
         setOnline(true);
         setPage("HomePage");
+    }
+    /**
+     * changes page
+     * @param nextPage
+     * @return
+     */
+    @Override
+    public final String changePage(final String nextPage) {
+        // List of valid pages for a normal user
+        List<String> validPages = Arrays.asList("HomePage", "LikedContentPage");
+
+        if (validPages.contains(nextPage)) {
+            currentPage = nextPage; // Update the current page
+            return getUsername() + " accessed " + nextPage + " successfully.";
+        } else {
+            return getUsername() + " is trying to access a non-existent page.";
+        }
     }
 
     /**
@@ -52,32 +70,32 @@ public class NormalUser extends User {
 
         if (pageName.equals("HomePage")) {
             return formatHomePage();
+        } else if (pageName.equals("LikedContentPage")) {
+            return formatLikedContentPage();
         } else {
             return "Error";
         }
     }
 
-    private String formatHomePage() {
+    public String formatHomePage() {
         StringBuilder sb = new StringBuilder();
         List<Song> likedSongs = getLikedSongs();
         if (!likedSongs.isEmpty()) {
             sb.append("Liked songs:\n\t[");
             likedSongs.stream()
-                    .limit(MAXSONGS) // Limit to 5 songs
+                    .limit(MAXSONGS)
                     .forEach(song -> sb.append(song.getName()).append(", "));
-            sb.setLength(sb.length() - 2); // Remove the last comma and space
+            sb.setLength(sb.length() - 2);
             sb.append("]");
         } else {
             sb.append("Liked songs:\n\t[]");
         }
 
-// Add a newline between liked songs and followed playlists
         sb.append("\n\n");
 
-// Format followed playlists
         List<Playlist> followedPlaylists = getFollowedPlaylists();
         if (!followedPlaylists.isEmpty()) {
-            sb.append("Followed Playlists:\n\t[");
+            sb.append("Followed playlists:\n\t[");
             followedPlaylists.stream()
                     .limit(MAXSONGS) // Limit to 5 playlists
                     .forEach(playlist -> sb.append(playlist.getName()).append(" - ")
@@ -85,35 +103,40 @@ public class NormalUser extends User {
             sb.setLength(sb.length() - 2); // Remove the last comma and space
             sb.append("]");
         } else {
-            sb.append("Followed Playlists:\n\t[]");
+            sb.append("Followed playlists:\n\t[]");
         }
-
         return sb.toString();
     }
-
-    /**
-     * checks the loaed album
-     * @param albumName
-     * @return
-     */
-    public boolean hasAlbumLoaded(final String albumName) {
-        AudioFile currentAudioFile = this.getPlayer().getCurrentAudioFile();
-        if (currentAudioFile != null) {
-            String loadedAlbumName = currentAudioFile.getAlbumName();
-            return albumName.equals(loadedAlbumName);
+    public String formatLikedContentPage() {
+        StringBuilder sb = new StringBuilder();
+        List<Song> likedSongs = getLikedSongs();
+        if (!likedSongs.isEmpty()) {
+            sb.append("Liked songs:\n\t[");
+            likedSongs.stream()
+                    .limit(MAXSONGS)
+                    .forEach(song -> sb.append(song.getName()).append(", "));
+            sb.setLength(sb.length() - 2);
+            sb.append("]");
+        } else {
+            sb.append("Liked songs:\n\t[]");
         }
-        return false;
-    }
 
-    /**
-     * checks if the song from album is loaded
-     * @param albumName
-     * @return
-     */
-    public boolean hasSongFromAlbumLoaded(final String albumName) {
-        return hasAlbumLoaded(albumName);
-    }
+        sb.append("\n\n");
 
+        List<Playlist> followedPlaylists = getFollowedPlaylists();
+        if (!followedPlaylists.isEmpty()) {
+            sb.append("Followed playlists:\n\t[");
+            followedPlaylists.stream()
+                    .limit(MAXSONGS) // Limit to 5 playlists
+                    .forEach(playlist -> sb.append(playlist.getName()).append(" - ")
+                            .append(playlist.getOwner()).append(", "));
+            sb.setLength(sb.length() - 2); // Remove the last comma and space
+            sb.append("]");
+        } else {
+            sb.append("Followed playlists:\n\t[]");
+        }
+        return sb.toString();
+    }
     /**
      * Search array list.
      *

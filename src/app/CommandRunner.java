@@ -1,8 +1,10 @@
 package app;
 
+import app.audio.Collections.Album;
 import app.audio.Collections.PlaylistOutput;
 import app.audio.Collections.Podcast;
 import app.audio.Files.Episode;
+import app.audio.Files.Song;
 import app.player.PlayerStats;
 import app.searchBar.Filters;
 import app.user.Artist;
@@ -17,8 +19,6 @@ import fileio.input.SongInput;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * The type Command runner.
@@ -560,16 +560,16 @@ public final class CommandRunner {
      * @param commandInput
      * @return
      */
-    public static ObjectNode getAllUsers(final CommandInput commandInput) {
-        List<String> results = Admin.getAllUsers();
-
-        ObjectNode objectNode = objectMapper.createObjectNode();
-        objectNode.put("command", commandInput.getCommand());
-        objectNode.put("timestamp", commandInput.getTimestamp());
-        objectNode.put("result", objectMapper.valueToTree(results));
-
-        return objectNode;
-    }
+//    public static ObjectNode getAllUsers(final CommandInput commandInput) {
+//        List<String> results = Admin.getAllUsers();
+//
+//        ObjectNode objectNode = objectMapper.createObjectNode();
+//        objectNode.put("command", commandInput.getCommand());
+//        objectNode.put("timestamp", commandInput.getTimestamp());
+//        objectNode.put("result", objectMapper.valueToTree(results));
+//
+//        return objectNode;
+//    }
 
 
 //        public static ObjectNode deleteUser(final CommandInput commandInput) {
@@ -602,51 +602,19 @@ public final class CommandRunner {
         String albumName = commandInput.getName();
         Integer albumYear = commandInput.getReleaseYear();
         String albumDescription = commandInput.getDescription();
-        List<String> songNames = commandInput.getSongs().stream()
-                .map(SongInput::getName)
-                .collect(Collectors.toList());
+        List<SongInput> songNames = commandInput.getSongs();
 
         String message;
         if (user == null) {
             message = "The username " + commandInput.getUsername() + " doesn't exist.";
+        } else {
+            message = user.addAlbum(albumName, albumYear, albumDescription, songNames);
         }
-
-        message = user.addAlbum(albumName, albumYear, albumDescription, songNames);
-
         ObjectNode objectNode = objectMapper.createObjectNode();
         objectNode.put("command", commandInput.getCommand());
         objectNode.put("user", commandInput.getUsername());
         objectNode.put("timestamp", commandInput.getTimestamp());
         objectNode.put("message", message);
-
-        return objectNode;
-    }
-
-    /**
-     * ShowAlbum object node.
-     *
-     * @param commandInput
-     * @return
-     */
-    public static ObjectNode showAlbum(final CommandInput commandInput) {
-        User user = Admin.getUser(commandInput.getUsername());
-
-        ObjectNode objectNode = objectMapper.createObjectNode();
-        objectNode.put("command", commandInput.getCommand());
-        objectNode.put("user", commandInput.getUsername());
-        objectNode.put("timestamp", commandInput.getTimestamp());
-
-        Artist artist = (Artist) user;
-        List<Map<String, Object>> albums = Admin.showAlbums(artist);
-
-        ArrayNode albumsArray = objectMapper.createArrayNode();
-        for (Map<String, Object> album : albums) {
-            ObjectNode albumNode = objectMapper.createObjectNode();
-            albumNode.put("name", (String) album.get("name"));
-            albumNode.putPOJO("songs", album.get("songs"));
-            albumsArray.add(albumNode);
-        }
-        objectNode.set("result", albumsArray);
 
         return objectNode;
     }
@@ -670,15 +638,26 @@ public final class CommandRunner {
 
         return objectNode;
     }
-//    public static String changePage(User user, String nextPage) {
-//        if (nextPage.equals("HomePage")) {
-//            user.changePage(new HomePage());
-//            return user.getUsername() + " accessed HomePage successfully.";
-//        }
-//        // Handle other page types similarly
-//
-//        return user.getUsername() + " is trying to access a non-existent page.";
-//    }
+
+    /**
+     * Changes the page
+     * @param commandInput
+     * @return
+     */
+    public static ObjectNode changePage(final CommandInput commandInput) {
+        User user = Admin.getUser(commandInput.getUsername());
+        String nextPage = commandInput.getNextPage();
+
+        String message = user.changePage(nextPage);
+
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        objectNode.put("command", commandInput.getCommand());
+        objectNode.put("user", commandInput.getUsername());
+        objectNode.put("timestamp", commandInput.getTimestamp());
+        objectNode.put("message", message);
+
+        return objectNode;
+    }
 
     /**
      * Adds an event
@@ -851,28 +830,61 @@ public final class CommandRunner {
     }
 
     /**
-     * Removes an album
+     * ShowAlbum object node.
+     *
      * @param commandInput
      * @return
      */
-    public static ObjectNode removeAlbum(final CommandInput commandInput) {
+    public static ObjectNode showAlbum(final CommandInput commandInput) {
         User user = Admin.getUser(commandInput.getUsername());
-
-        String albumName = commandInput.getName();
-        String message;
-
-        if (user == null) {
-            message = "The username " + commandInput.getUsername() + " doesn't exist.";
-        } else {
-            message = user.removeAlbum(albumName);
-        }
 
         ObjectNode objectNode = objectMapper.createObjectNode();
         objectNode.put("command", commandInput.getCommand());
         objectNode.put("user", commandInput.getUsername());
         objectNode.put("timestamp", commandInput.getTimestamp());
-        objectNode.put("message", message);
 
+        Artist artist = (Artist) user;
+        ArrayNode artistsArray = objectMapper.createArrayNode();
+
+        for (Album album : artist.getAlbums()) {
+            ObjectNode albumNode = objectMapper.createObjectNode();
+            albumNode.put("name", album.getName());
+
+            ArrayNode songsArray = objectMapper.createArrayNode();
+            for (Song song : album.getSongs()) {
+                songsArray.add(song.getName());
+            }
+
+            albumNode.set("songs", songsArray);
+            artistsArray.add(albumNode);
+        }
+        objectNode.set("result", artistsArray);
         return objectNode;
     }
+
+    /**
+     * Removes an album
+     * @param commandInput
+     * @return
+     */
+//    public static ObjectNode removeAlbum(final CommandInput commandInput) {
+//        User user = Admin.getUser(commandInput.getUsername());
+//
+//        String albumName = commandInput.getName();
+//        String message;
+//
+//        if (user == null) {
+//            message = "The username " + commandInput.getUsername() + " doesn't exist.";
+//        } else {
+//            message = user.removeAlbum(albumName);
+//        }
+//
+//        ObjectNode objectNode = objectMapper.createObjectNode();
+//        objectNode.put("command", commandInput.getCommand());
+//        objectNode.put("user", commandInput.getUsername());
+//        objectNode.put("timestamp", commandInput.getTimestamp());
+//        objectNode.put("message", message);
+//
+//        return objectNode;
+//    }
 }

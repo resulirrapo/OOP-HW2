@@ -14,6 +14,7 @@ public final class FiltersInput {
     private String artist;
     private String owner; // pentru search playlist si podcast
     private String followers; // pentru search playlist -> followers
+    private String description;
     public FiltersInput() {
     }
 

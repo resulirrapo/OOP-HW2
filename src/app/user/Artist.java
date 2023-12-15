@@ -1,22 +1,25 @@
 package app.user;
 
+import app.Admin;
+import app.audio.Collections.Album;
+import app.audio.Files.Song;
+import fileio.input.SongInput;
 import lombok.Data;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
-
 @Data
 /**
  * The type Artist.
  * This class extends User and is used to create an artist.
  */
 public class Artist extends User {
-    private Map<String, Set<String>> albums;
     private List<Event> events = new ArrayList<>();
     private List<Merch> merchList = new ArrayList<>();
-    private static List<User> users = new ArrayList<>();
+    private static final int MAXALBUMS = 5;
+    private static final int MAXLIST = 5;
+    private static final int MAXEVENTS = 5;
     public static final int MAXYEAR = 2023;
     public static final int MINYEAR = 1900;
     public static final int MAXMONTH = 12;
@@ -25,12 +28,23 @@ public class Artist extends User {
     public static final int FEBRUARYDAYS = 28;
 
     public Artist() {
+        setPage("ArtistPage");
     }
 
     public Artist(final String username, final int age, final String city) {
         super(username, age, city);
-        this.albums = new HashMap<>();
         this.events = new ArrayList<>();
+        setPage("ArtistPage");
+    }
+
+    /**
+     * Change page
+     * @param nextPage
+     * @return
+     */
+    @Override
+    public final String changePage(final String nextPage) {
+        return getUsername() + " is not authorized to change pages.";
     }
 
     /**
@@ -48,50 +62,43 @@ public class Artist extends User {
      */
     public final String addAlbum(final String albumName,
                                final Integer releaseYear, final String albumDescription,
-                               final List<String> songNames) {
-        if (albums.containsKey(albumName)) {
-            return getUsername() + "has another album with the same name.";
-        } else if (songNames.stream().collect(Collectors.groupingBy(e -> e, Collectors.counting()))
-                        .values().stream().anyMatch(e -> e > 1)) {
-            return "Album " + albumName + " has duplicate songs.";
+                               final List<SongInput> songNames) {
+        List<Album> albums = Admin.getAlbums().stream()
+                .filter(album -> album.getOwner().equalsIgnoreCase(getUsername()))
+                .collect(Collectors.toList());
+
+        if (albums.stream().anyMatch(album -> album.getName().equalsIgnoreCase(albumName))) {
+            return getUsername() + " has another album with the same name.";
+        } else if (songNames.stream().map(SongInput::getName).collect(Collectors.toSet()).size()
+                        != songNames.size()) {
+            return getUsername() + " has the same song at least twice in this album.";
         }
+
+        Album newAlbum = new Album(albumName, getUsername(), albumDescription);
+
+        for (SongInput song : songNames) {
+            Song newSong = new Song(song.getName(), song.getDuration(), albumName,
+                    song.getTags(), song.getLyrics(), song.getGenre(), releaseYear, getUsername());
+            newAlbum.getSongs().add(newSong);
+            Admin.addSong(newSong);
+        }
+        Admin.addAlbum(newAlbum);
+
         return getUsername() + " has added new album successfully.";
     }
-
     /**
      * removes an album
      * @param albumName
      * @return
      */
-    public String removeAlbum(final String albumName) {
-        if (!albums.containsKey(albumName)) {
-            return getUsername() + " doesn't have the album with the given name.";
-        } else {
-            // Check if any normal user has the album or a song from it loaded
-            for (User user : users) {
-                if (user.getUserType() == 0) {
-                    NormalUser normalUser = (NormalUser) user;
-                    if (normalUser.hasAlbumLoaded(albumName)
-                            || normalUser.hasSongFromAlbumLoaded(albumName)) {
-                        return "can't delete this album.";
-                    }
-                }
-            }
-        }
-
-        // Remove the album
-        albums.remove(albumName);
-        return getUsername() + " deleted the album successfully.";
-    }
-
-    /**
-     * Add a song to an album
-     */
-    public final void showAlbums() {
-        for (String albumName : albums.keySet()) {
-            System.out.println(albumName);
-        }
-    }
+//    public String removeAlbum(final String albumName) {
+//        if (albums.stream().noneMatch(album -> album.getName().equalsIgnoreCase(albumName))) {
+//            return getUsername() + " doesn't have an album with the given name.";
+//        } else if (albums.stream().anyMatch(album -> album.getName().equalsIgnoreCase(albumName)
+//                && album.getNumberOfSongs() > 0)) {
+//            return getUsername() + " has songs in this album, cannot remove.";
+//        }
+//    }
 
     /**
      * formats the page content
@@ -99,7 +106,55 @@ public class Artist extends User {
      * @return
      */
     public String formatPageContent(final String pageName) {
-        return "Artist";
+        if (pageName.equals("Artist")) {
+           return formatArtistPage();
+        } else {
+            return "Error";
+        }
+    }
+
+    /**
+     * formats the artist page
+     * @return
+     */
+    public String formatArtistPage() {
+        StringBuilder sb = new StringBuilder();
+        List<Album> albums = getAlbums();
+
+        if (!albums.isEmpty()) {
+            sb.append("Albums:\n\t[");
+            albums.stream().limit(MAXALBUMS)
+                    .forEach(album -> sb.append(album.getName()).append(", "));
+            sb.setLength(sb.length() - 2);
+            sb.append("]");
+        } else {
+            sb.append("Albums:\n\t[]");
+        }
+
+        sb.append("\n\n");
+
+        if (!merchList.isEmpty()) {
+            sb.append("Merchandise:\n\t[");
+            merchList.stream().limit(MAXLIST)
+                    .forEach(merch -> sb.append(merch.getName()).append(", "));
+            sb.setLength(sb.length() - 2);
+            sb.append("]");
+        } else {
+            sb.append("Merchandise:\n\t[]");
+        }
+
+        sb.append("\n\n");
+
+        if (!events.isEmpty()) {
+            sb.append("Events:\n\t[");
+            events.stream().limit(MAXEVENTS)
+                    .forEach(event -> sb.append(event.getName()).append(", "));
+            sb.setLength(sb.length() - 2);
+            sb.append("]");
+        } else {
+            sb.append("Events:\n\t[]");
+        }
+        return sb.toString();
     }
 
     /**
@@ -167,8 +222,8 @@ public class Artist extends User {
      * @return
      */
     @Override
-    public int getUserType() {
-        return 1;
+    public String getUserType() {
+        return "Artist";
     }
 
     /**
@@ -194,5 +249,15 @@ public class Artist extends User {
             merchList.add(newMerch);
 
             return getUsername() + " has added new merchandise successfully.";
+        }
+
+    /**
+     * searches for a song
+     * @return
+     */
+        public List<Album> getAlbums() {
+            return Admin.getAlbums().stream()
+                    .filter(album -> album.getOwner().equalsIgnoreCase(getUsername()))
+                    .collect(Collectors.toList());
         }
 }

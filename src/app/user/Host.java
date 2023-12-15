@@ -14,26 +14,34 @@ import java.util.*;
  * This class extends User and is used to create a host.
  */
 public class Host extends User {
+    private String name;
     private List<Podcast> podcasts;
+    private static final int MAXPODCAST = 5;
+    private static final int MAXANNOUNCEMENT = 5;
     private List<Announcement> announcements = new ArrayList<>();
     public Host() {
+        setPage("HostPage");
     }
 
     public Host(final String username, final int age, final String city) {
 
         super(username, age, city);
-        this.podcasts = new ArrayList<>();
         this.announcements = new ArrayList<>();
+        this.podcasts = new ArrayList<>();
+        setOnline(true);
+        setPage("HostPage");
     }
-
+    @Override
+    public final String changePage(final String nextPage) {
+        return getUsername() + " is not authorized to change pages.";
+    }
     /**
      * Switch connection status of users
      * @return
      */
-    public String switchConnectionStatus() {
+    public final String switchConnectionStatus() {
         return this.getUsername() + "is not a normal user";
     }
-
 
     /**
      * Format page content
@@ -41,7 +49,43 @@ public class Host extends User {
      * @return
      */
     public final String formatPageContent(final String pageName) {
-        return "Host";
+        if (pageName.equals("Host")) {
+            return formatHostPage();
+        } else {
+            return "Error";
+        }
+    }
+
+    /**
+     * Format host page
+     * @return
+     */
+    public final String formatHostPage() {
+        StringBuilder sb = new StringBuilder();
+        if (!podcasts.isEmpty()) {
+            sb.append("Podcast:\n\t[");
+            podcasts.stream()
+                    .limit(MAXPODCAST)
+                    .forEach(podcast -> sb.append(podcast.getName()).append(", "));
+            sb.setLength(sb.length() - 2);
+            sb.append("]");
+        } else {
+            sb.append("Liked songs:\n\t[]");
+        }
+
+        sb.append("\n\n");
+
+        if (!announcements.isEmpty()) {
+            sb.append("Announcements:\n\t[");
+            announcements.stream()
+                    .limit(MAXANNOUNCEMENT)
+                    .forEach(announcement -> sb.append(announcement.getName()).append(", "));
+            sb.setLength(sb.length() - 2);
+            sb.append("]");
+        } else {
+            sb.append("Announcements:\n\t[]");
+        }
+        return sb.toString();
     }
 
     /**
@@ -49,8 +93,8 @@ public class Host extends User {
      * @return
      */
     @Override
-    public int getUserType() {
-        return 2;
+    public final String getUserType() {
+        return "Host";
     }
 
     /**
@@ -61,23 +105,19 @@ public class Host extends User {
      * @return
      */
     @Override
-    public String addPodcast(final String podcastName,
+    public final String addPodcast(final String podcastName,
                              final String podcastDescription,
                              final List<EpisodeInput> episodeInputs) {
-        // Check if a podcast with the same name already exists
         if (podcasts.stream().anyMatch(p -> p.getName().equalsIgnoreCase(podcastName))) {
             return getUsername() + " has another podcast with the same name.";
         }
 
-        // Check for duplicate episodes in the new podcast
         Set<String> episodeNames = new HashSet<>();
         for (EpisodeInput episodeInput : episodeInputs) {
             if (!episodeNames.add(episodeInput.getName())) {
                 return getUsername() + " has the same episode in this podcast.";
             }
         }
-
-        // Create new episodes and add them to the podcast
         List<Episode> newEpisodes = new ArrayList<>();
         for (EpisodeInput episodeInput : episodeInputs) {
             Episode newEpisode = new Episode(episodeInput.getName(),
@@ -85,7 +125,6 @@ public class Host extends User {
             newEpisodes.add(newEpisode);
         }
 
-        // Create the new podcast and add it to the host's list
         Podcast newPodcast = new Podcast(podcastName, podcastDescription, newEpisodes);
         podcasts.add(newPodcast);
 
@@ -99,7 +138,7 @@ public class Host extends User {
      * @return
      */
     @Override
-    public String addAnnouncement(final String announcementName,
+    public final String addAnnouncement(final String announcementName,
                                   final String announcementDescription) {
         if (announcements.stream().anyMatch(a -> a.getName().equalsIgnoreCase(announcementName))) {
             return getUsername() + " has already added an announcement with this name.";
@@ -113,7 +152,7 @@ public class Host extends User {
      * @return
      */
     @Override
-    public String removeAnnouncement(final String announcementName) {
+    public final String removeAnnouncement(final String announcementName) {
         System.out.println("Attempting to remove announcement: " + announcementName);
         if (announcements.stream().noneMatch(a -> a.getName().equalsIgnoreCase(announcementName))) {
             System.out.println("No such announcement found.");
@@ -124,4 +163,5 @@ public class Host extends User {
         }
         return getUsername() + " has successfully deleted the announcement.";
     }
+
 }

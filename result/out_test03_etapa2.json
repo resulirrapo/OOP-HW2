@@ -26,7 +26,7 @@
   "command" : "addAlbum",
   "user" : "melodymaster",
   "timestamp" : 35,
-  "message" : "melodymaster has added new album successfully."
+  "message" : "melodymaster has another album with the same name."
 }, {
   "command" : "showAlbums",
   "user" : "beatblazer",
@@ -56,18 +56,18 @@
   "command" : "search",
   "user" : "alice22",
   "timestamp" : 65,
-  "message" : "Search returned 0 results",
-  "results" : [ ]
+  "message" : "Search returned 1 results",
+  "results" : [ "melodymaster" ]
 }, {
   "command" : "select",
   "user" : "alice22",
   "timestamp" : 70,
-  "message" : "The selected ID is too high."
+  "message" : "Successfully selected melodymaster."
 }, {
   "user" : "alice22",
   "command" : "printCurrentPage",
   "timestamp" : 75,
-  "message" : "Liked songs:\n\t[]\n\nFollowed Playlists:\n\t[]"
+  "message" : "Liked songs:\n\t[]\n\nFollowed playlists:\n\t[]"
 }, {
   "command" : "addMerch",
   "user" : "melodymaster",
@@ -108,21 +108,21 @@
   "command" : "search",
   "user" : "bob35",
   "timestamp" : 105,
-  "message" : "Search returned 0 results",
-  "results" : [ ]
+  "message" : "Search returned 1 results",
+  "results" : [ "melodymaster" ]
 }, {
   "command" : "select",
   "user" : "bob35",
   "timestamp" : 110,
-  "message" : "The selected ID is too high."
+  "message" : "Successfully selected melodymaster."
 }, {
   "user" : "alice22",
   "command" : "printCurrentPage",
   "timestamp" : 115,
-  "message" : "Liked songs:\n\t[]\n\nFollowed Playlists:\n\t[]"
+  "message" : "Liked songs:\n\t[]\n\nFollowed playlists:\n\t[]"
 }, {
   "user" : "bob35",
   "command" : "printCurrentPage",
   "timestamp" : 120,
-  "message" : "Liked songs:\n\t[]\n\nFollowed Playlists:\n\t[]"
+  "message" : "Liked songs:\n\t[]\n\nFollowed playlists:\n\t[]"
 } ]

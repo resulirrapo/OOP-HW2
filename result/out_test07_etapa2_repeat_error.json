@@ -7,7 +7,7 @@
   "command" : "addAlbum",
   "user" : "melodymaster",
   "timestamp" : 2,
-  "message" : "melodymaster has added new album successfully."
+  "message" : "melodymaster has another album with the same name."
 }, {
   "command" : "addUser",
   "user" : "rhythmicrider58",
@@ -228,7 +228,7 @@
   "user" : "rhythmicrider58",
   "command" : "printCurrentPage",
   "timestamp" : 3300,
-  "message" : "Liked songs:\n\t[]\n\nFollowed Playlists:\n\t[My favourite songs - emily30]"
+  "message" : "Liked songs:\n\t[]\n\nFollowed playlists:\n\t[My favourite songs - emily30]"
 }, {
   "command" : "status",
   "user" : "emily30",
@@ -307,5 +307,5 @@
   "user" : "rhythmicrider58",
   "command" : "printCurrentPage",
   "timestamp" : 7000,
-  "message" : "Liked songs:\n\t[Shape of You]\n\nFollowed Playlists:\n\t[My favourite songs - emily30]"
+  "message" : "Liked songs:\n\t[Shape of You]\n\nFollowed playlists:\n\t[My favourite songs - emily30]"
 } ]

@@ -12,8 +12,8 @@ import app.searchBar.Filters;
 import app.searchBar.SearchBar;
 import app.utils.Enums;
 import fileio.input.EpisodeInput;
+import fileio.input.SongInput;
 import lombok.Data;
-import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,23 +22,18 @@ import java.util.List;
  * The type User.
  */
 public abstract class User {
-    @Getter
     private String username;
-    @Getter
     private int age;
-    @Getter
     private String city;
-    @Getter
     private ArrayList<Playlist> playlists;
-    @Getter
     private ArrayList<Song> likedSongs;
-    @Getter
     private ArrayList<Playlist> followedPlaylists;
     private final Player player = new Player();
     private SearchBar searchBar;
     private boolean lastSearched;
     private boolean isOnline = false;
     private String page;
+    private String typeUser;
 
     /**
      * Instantiates a new User.
@@ -81,6 +76,14 @@ public abstract class User {
         }
         return results;
     }
+    /**
+     * Change page string.
+     * @param nextPage
+     * @return
+     */
+    public String changePage(final String nextPage) {
+        return getUsername() + " is not authorized to change pages.";
+    }
 
         /**
          * Toggles the connection status of the user.
@@ -105,7 +108,7 @@ public abstract class User {
      */
         public String addAlbum(final String albumName,
                                final Integer releaseYear, final String albumDescription,
-                               final List<String> songNames) {
+                               final List<SongInput> songNames) {
             return getUsername() + " is not an artist.";
         }
 
@@ -179,8 +182,8 @@ public abstract class User {
      * Gets user type.
      * @return
      */
-    public int getUserType() {
-        return 0;
+    public String getUserType() {
+        return "User";
     }
     /**
      * Select string.

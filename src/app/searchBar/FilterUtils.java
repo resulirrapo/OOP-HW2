@@ -1,6 +1,7 @@
 package app.searchBar;
 
 import app.audio.LibraryEntry;
+import app.audio.Collections.Album;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,17 @@ public final class FilterUtils {
             }
         }
         return result;
+    }
+
+    /**
+     * Filter by description list.
+     * @param entries
+     * @param description
+     * @return
+     */
+    public static List<LibraryEntry> filterByDescription(final List<LibraryEntry> entries,
+                                                final String description) {
+        return filter(entries, entry -> entry.matchesDescription(description));
     }
 
     /**
@@ -159,5 +171,14 @@ public final class FilterUtils {
          * @return the boolean
          */
         boolean matches(LibraryEntry entry);
+    }
+    private interface FilterCriteriaAlbum {
+        /**
+         * Matches boolean.
+         *
+         * @param entry the entry
+         * @return the boolean
+         */
+        boolean matches(Album entry);
     }
 }

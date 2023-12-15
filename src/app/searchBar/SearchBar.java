@@ -3,22 +3,16 @@ package app.searchBar;
 
 import app.Admin;
 import app.audio.LibraryEntry;
+import app.user.Artist;
+import app.user.Host;
+import lombok.Data;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static app.searchBar.FilterUtils.filterByAlbum;
-import static app.searchBar.FilterUtils.filterByArtist;
-import static app.searchBar.FilterUtils.filterByFollowers;
-import static app.searchBar.FilterUtils.filterByGenre;
-import static app.searchBar.FilterUtils.filterByLyrics;
-import static app.searchBar.FilterUtils.filterByName;
-import static app.searchBar.FilterUtils.filterByOwner;
-import static app.searchBar.FilterUtils.filterByPlaylistVisibility;
-import static app.searchBar.FilterUtils.filterByReleaseYear;
-import static app.searchBar.FilterUtils.filterByTags;
-
+import static app.searchBar.FilterUtils.*;
+@Data
 /**
  * The type Search bar.
  */
@@ -57,7 +51,7 @@ public final class SearchBar {
      * @return the list
      */
     public List<LibraryEntry> search(final Filters filters, final String type) {
-        List<LibraryEntry> entries;
+        List<LibraryEntry> entries = new ArrayList<>();
 
         switch (type) {
             case "song":
@@ -122,14 +116,55 @@ public final class SearchBar {
                 }
 
                 break;
+            case "album":
+                entries = new ArrayList<>(Admin.getAlbums());
+
+                if (filters.getName() != null) {
+                    entries = filterByName(entries, filters.getName());
+                }
+
+                if (filters.getOwner() != null) {
+                    entries = filterByOwner(entries, filters.getOwner());
+                }
+
+                if (filters.getDescription() != null) {
+                    entries = filterByDescription(entries, filters.getDescription());
+                }
+
+                break;
+                case "artist":
+
+                    List<Artist> artists = new ArrayList<>(Admin.getArtists());
+
+                    for (Artist artist : artists) {
+                        entries.add(new LibraryEntry(artist.getUsername()));
+                    }
+
+                    if (filters.getName() != null) {
+                        entries = filterByName(entries, filters.getName());
+                    }
+                break;
+
+            case "host":
+                List<Host> hosts = new ArrayList<>(Admin.getHosts());
+
+                for (Host host : hosts) {
+                    entries.add(new LibraryEntry(host.getUsername()));
+                }
+
+                if (filters.getName() != null) {
+                    entries = filterByName(entries, filters.getName());
+                }
+
+
+                break;
+
             default:
                 entries = new ArrayList<>();
         }
-
         while (entries.size() > MAX_RESULTS) {
             entries.remove(entries.size() - 1);
         }
-
         this.results = entries;
         this.lastSearchType = type;
         return this.results;

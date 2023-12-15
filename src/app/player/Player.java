@@ -4,11 +4,11 @@ import app.audio.Collections.AudioCollection;
 import app.audio.Files.AudioFile;
 import app.audio.LibraryEntry;
 import app.utils.Enums;
-import lombok.Getter;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Data
 /**
  * The type Player.
  */
@@ -17,7 +17,6 @@ public final class Player {
     private boolean shuffle;
     private boolean paused;
     private PlayerSource source;
-    @Getter
     private String type;
     private final int skipTime = 90;
 
@@ -74,8 +73,9 @@ public final class Player {
             return new PlayerSource(Enums.PlayerSourceType.PLAYLIST, (AudioCollection) entry);
         } else if ("podcast".equals(type)) {
             return createPodcastSource((AudioCollection) entry, bookmarks);
+        } else if ("album".equals(type)) {
+            return new PlayerSource(Enums.PlayerSourceType.PLAYLIST, (AudioCollection) entry);
         }
-
         return null;
     }
 

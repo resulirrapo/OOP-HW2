@@ -18,7 +18,7 @@
   "command" : "addAlbum",
   "user" : "melodymaster",
   "timestamp" : 172,
-  "message" : "melodymaster has added new album successfully."
+  "message" : "melodymaster has another album with the same name."
 }, {
   "command" : "addEvent",
   "user" : "melodymaster",
@@ -49,8 +49,8 @@
   "command" : "search",
   "user" : "david27",
   "timestamp" : 270,
-  "message" : "Search returned 0 results",
-  "results" : [ ]
+  "message" : "Search returned 1 results",
+  "results" : [ "melodymaster" ]
 }, {
   "command" : "select",
   "user" : "bob35",
@@ -65,7 +65,7 @@
   "command" : "select",
   "user" : "david27",
   "timestamp" : 320,
-  "message" : "The selected ID is too high."
+  "message" : "Successfully selected melodymaster."
 }, {
   "command" : "addRemoveInPlaylist",
   "user" : "bob35",
@@ -104,11 +104,6 @@
   "message" : "Search returned 1 results",
   "results" : [ "Elevate" ]
 }, {
-  "command" : "removeAlbum",
-  "user" : "Ed Sheeran",
-  "timestamp" : 375,
-  "message" : "The username Ed Sheeran doesn't exist."
-}, {
   "command" : "select",
   "user" : "bob35",
   "timestamp" : 390,
@@ -132,28 +127,23 @@
   "user" : "david27",
   "command" : "printCurrentPage",
   "timestamp" : 430,
-  "message" : "Liked songs:\n\t[]\n\nFollowed Playlists:\n\t[]"
-}, {
-  "command" : "removeAlbum",
-  "user" : "melodymaster",
-  "timestamp" : 430,
-  "message" : "melodymaster doesn't have the album with the given name."
+  "message" : "Liked songs:\n\t[]\n\nFollowed playlists:\n\t[]"
 }, {
   "command" : "search",
   "user" : "bob35",
   "timestamp" : 431,
-  "message" : "Search returned 0 results",
-  "results" : [ ]
+  "message" : "Search returned 1 results",
+  "results" : [ "Harmonic Horizons" ]
 }, {
   "command" : "select",
   "user" : "bob35",
   "timestamp" : 432,
-  "message" : "The selected ID is too high."
+  "message" : "Successfully selected Harmonic Horizons."
 }, {
   "command" : "load",
   "user" : "bob35",
   "timestamp" : 433,
-  "message" : "Please select a source before attempting to load."
+  "message" : "Playback loaded successfully."
 }, {
   "command" : "addMerch",
   "user" : "melodymaster",
@@ -169,27 +159,27 @@
   "user" : "bob35",
   "timestamp" : 434,
   "stats" : {
-    "name" : "",
-    "remainedTime" : 0,
+    "name" : "Vibrant Echoes",
+    "remainedTime" : 249,
     "repeat" : "No Repeat",
     "shuffle" : false,
-    "paused" : true
+    "paused" : false
   }
 }, {
   "command" : "shuffle",
   "user" : "bob35",
   "timestamp" : 440,
-  "message" : "Please load a source before using the shuffle function."
+  "message" : "The loaded source is not a playlist."
 }, {
   "command" : "status",
   "user" : "bob35",
   "timestamp" : 446,
   "stats" : {
-    "name" : "",
-    "remainedTime" : 0,
+    "name" : "Vibrant Echoes",
+    "remainedTime" : 237,
     "repeat" : "No Repeat",
     "shuffle" : false,
-    "paused" : true
+    "paused" : false
   }
 }, {
   "command" : "repeat",
@@ -211,22 +201,17 @@
   "user" : "bob35",
   "timestamp" : 1000,
   "stats" : {
-    "name" : "",
-    "remainedTime" : 0,
+    "name" : "Retro Rhythms",
+    "remainedTime" : 203,
     "repeat" : "No Repeat",
     "shuffle" : false,
-    "paused" : true
+    "paused" : false
   }
 }, {
   "command" : "like",
   "user" : "carol19",
   "timestamp" : 1115,
   "message" : "Please load a source before liking or unliking."
-}, {
-  "command" : "removeAlbum",
-  "user" : "melodymaster",
-  "timestamp" : 1200,
-  "message" : "melodymaster doesn't have the album with the given name."
 }, {
   "command" : "search",
   "user" : "carol19",
@@ -264,7 +249,7 @@
   "user" : "carol19",
   "command" : "printCurrentPage",
   "timestamp" : 2455,
-  "message" : "Liked songs:\n\t[]\n\nFollowed Playlists:\n\t[]"
+  "message" : "Liked songs:\n\t[]\n\nFollowed playlists:\n\t[]"
 }, {
   "command" : "load",
   "user" : "bob35",
@@ -366,11 +351,6 @@
     "paused" : false
   }
 }, {
-  "command" : "removeAlbum",
-  "user" : "melodymaster",
-  "timestamp" : 3000,
-  "message" : "melodymaster doesn't have the album with the given name."
-}, {
   "command" : "status",
   "user" : "bob35",
   "timestamp" : 3250,
@@ -412,7 +392,7 @@
   "user" : "david27",
   "command" : "printCurrentPage",
   "timestamp" : 3900,
-  "message" : "Liked songs:\n\t[]\n\nFollowed Playlists:\n\t[]"
+  "message" : "Liked songs:\n\t[]\n\nFollowed playlists:\n\t[]"
 }, {
   "command" : "status",
   "user" : "bob35",
@@ -460,7 +440,7 @@
   "user" : "david27",
   "command" : "printCurrentPage",
   "timestamp" : 4400,
-  "message" : "Liked songs:\n\t[]\n\nFollowed Playlists:\n\t[]"
+  "message" : "Liked songs:\n\t[]\n\nFollowed playlists:\n\t[]"
 }, {
   "command" : "status",
   "user" : "bob35",
@@ -487,7 +467,7 @@
   "user" : "carol19",
   "command" : "printCurrentPage",
   "timestamp" : 5000,
-  "message" : "Liked songs:\n\t[]\n\nFollowed Playlists:\n\t[My playlist - bob35]"
+  "message" : "Liked songs:\n\t[]\n\nFollowed playlists:\n\t[My playlist - bob35]"
 }, {
   "command" : "status",
   "user" : "bob35",

@@ -1,5 +1,6 @@
 package app;
 
+import app.audio.Collections.Album;
 import app.audio.Collections.Playlist;
 import app.audio.Collections.Podcast;
 import app.audio.Files.Episode;
@@ -21,6 +22,7 @@ public final class Admin {
     private static List<User> users = new ArrayList<>();
     private static List<Song> songs = new ArrayList<>();
     private static List<Podcast> podcasts = new ArrayList<>();
+    private static List<Album> albums = new ArrayList<>();
     private static int timestamp = 0;
     private static final int LIMIT = 5;
 
@@ -51,14 +53,11 @@ public final class Admin {
                 return "The username " + username + " is already taken.";
             }
         }
-        // Add user based on type
         switch (type.toLowerCase()) {
             case "artist":
-                // Assuming there is an ArtistUser class
                 users.add(new Artist(username, age, city));
                 break;
             case "host":
-                // Assuming there is a HostUser class
                 users.add(new Host(username, age, city));
                 break;
             default:
@@ -73,81 +72,46 @@ public final class Admin {
      * gets all users
      * @return
      */
-    public static List<String> getAllUsers() {
-        List<String> allUsers = new ArrayList<>();
-        for (User user : users) {
-            allUsers.add(user.getUsername());
-        }
-
-        return allUsers;
-    }
+//    public static List<String> getAllUsers() {
+//        // add allusers and sort them normausers first then artists then hosts
+//        List<String> allUsers = new ArrayList<>();
+//        List<NormalUser> normalUsers = new ArrayList<>();
+//        List<Artist> artists = new ArrayList<>();
+//        List<Host> hosts = new ArrayList<>();
+//        for (User user : users) {
+//            // add all users comparing if its normal user or artist or host
+//            if (user.getUserType().equals("NormalUser")) {
+//                normalUsers.add((NormalUser) user);
+//            } else if (user.getUserType().equals("Artist")) {
+//                artists.add((Artist) user);
+//            } else {
+//                hosts.add((Host) user);
+//            }
+//        }
+//        normalUsers.sort(Comparator.comparing(User::getUsername));
+//        artists.sort(Comparator.comparing(User::getUsername));
+//        hosts.sort(Comparator.comparing(User::getUsername));
+//
+//        allUsers.addAll(normalUsers.stream().map(User::getUsername).toList());
+//        allUsers.addAll(artists.stream().map(User::getUsername).toList());
+//        allUsers.addAll(hosts.stream().map(User::getUsername).toList());
+//
+//        return allUsers;
+//    }
 
 //        public static String deleteUser(String username) {
 //            for (User user : users) {
 //                if (user.getUsername().equals(username)) {
 //                    users.remove(user);
 //                    return "The username " + username + " was successfully deleted.";
+//                } else if (user.getUserType() == 1) {
+//                    return username + " can't be deleted.";
+//                } else if (user.getUserType() == 2) {
+//                    return username + " can't be deleted.";
 //                }
-////                } else if (user.getUserType() == 1) {
-////                    return username + " can't be deleted.";
-////                } else if (user.getUserType() == 2) {
-////                    return username + " can't be deleted.";
-////                }
 //            }
 //            return "The username " + username + " doesn't exist.";
 //        }
-
-//    /**
-//     * add an album
-//     * @param user
-//     * @param albumName
-//     * @param songList
-//     * @return
-//     */
-//    public static String addAlbum(final User user, final String albumName,
-//                                  final List<String> songList) {
-//        if (user.getClass() != Artist.class) {
-//            return user.getUsername() + " is not an artist.";
-//        }
-//
-//        Artist artist = (Artist) user;
-//
-//        // Check for existing album
-//        if (artist.hasAlbum(albumName)) {
-//            return artist.getUsername() + " has another album with the same name.";
-//        }
-//
-//        // Check for duplicate songs in the album
-//        HashSet<String> uniqueSongs = new HashSet<>(songList);
-//        if (uniqueSongs.size() != songList.size()) {
-//            return artist.getUsername() + " has the same song at least twice in this album.";
-//        }
-//
-//        // Add the album
-//        artist.addAlbum(albumName, songList);
-//
-//        return artist.getUsername() + " has added new album successfully.";
-//    }
-
-    /**
-     * show an album
-     * @param artist
-     * @return
-     */
-    public static List<Map<String, Object>> showAlbums(final Artist artist) {
-        List<Map<String, Object>> albumDetails = new ArrayList<>();
-
-        // Iterate over the map entries
-        for (Map.Entry<String, Set<String>> entry : artist.getAlbums().entrySet()) {
-            Map<String, Object> details = new HashMap<>();
-            details.put("name", entry.getKey()); // Album name
-            details.put("songs", entry.getValue()); // Song names
-            albumDetails.add(details);
-        }
-
-        return albumDetails;
-    }
-
 
     /**
      * Sets users.
@@ -212,6 +176,12 @@ public final class Admin {
     public static List<Podcast> getPodcasts() {
         return new ArrayList<>(podcasts);
     }
+
+    public static List<Album> getAlbums() {
+        return new ArrayList<>(albums);
+    }
+
+
 
     /**
      * Gets playlists.
@@ -301,6 +271,34 @@ public final class Admin {
     }
 
     /**
+     * Gets artists
+     * @return artists
+     */
+    public static List<Artist> getArtists() {
+        List<Artist> artists = new ArrayList<>();
+        for (User user : users) {
+            if (user.getUserType().equals("Artist")) {
+                artists.add((Artist) user);
+            }
+        }
+        return artists;
+    }
+
+    /**
+     * Gets hosts
+     * @return hosts
+     */
+    public static List<Host> getHosts() {
+        List<Host> hosts = new ArrayList<>();
+        for (User user : users) {
+            if (user.getUserType().equals("Host")) {
+                hosts.add((Host) user);
+            }
+        }
+        return hosts;
+    }
+
+    /**
      * Reset.
      */
     public static void reset() {
@@ -308,5 +306,21 @@ public final class Admin {
         songs = new ArrayList<>();
         podcasts = new ArrayList<>();
         timestamp = 0;
+    }
+
+    /**
+     * Add song
+     * @param song
+     */
+    public static void addSong(final Song song) {
+        songs.add(song);
+    }
+
+    /**
+     * Add album
+     * @param album
+     */
+    public static void addAlbum(final Album album) {
+        albums.add(album);
     }
 }
